@@ -1,12 +1,9 @@
 #include "code.hpp"
 
-class program {
-public:
-    void start() {
-        // Gets called once before start.
-    };
+void Program::start() {
+    // Gets called once before start.
+};
 
-    void update() {
-        // Gets called once a frame.
-    };
+void Program::update() {
+    // Gets called once a frame.
 };

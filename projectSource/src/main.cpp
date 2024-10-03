@@ -2,6 +2,8 @@
 #include "meta/display.h"
 #include "meta/eadk_vars.hpp"
 #include "palette.hpp"
+#include "code.hpp"
+#include <chrono>
 
 int main(int argc, char *argv[]) {
     EADK::Display::pushRectUniform(EADK::Screen::Rect, Indigo);
@@ -12,7 +14,14 @@ int main(int argc, char *argv[]) {
     bool running = true;
     bool homePressed = false;
 
+    Program game = Program();
+
+    game.start();
+
+    const int frameDuration = 1000 / 30;
+
     while (running) {
+        game.update();
         EADK::Keyboard::State kbdState = EADK::Keyboard::scan();
 
         if (kbdState.keyDown(EADK::Keyboard::Key::Home)) {
@@ -20,6 +29,11 @@ int main(int argc, char *argv[]) {
         } else if (homePressed) {
             running = false;
         }
+
+        game.update();
+        // TODO: re-render.
+
+        EADK::Timing::msleep(frameDuration);
     }
 
     return 0;
