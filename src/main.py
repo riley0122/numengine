@@ -23,14 +23,29 @@ def open_in_editor():
     else:
         print(f"Code file does not exist!")
 
-def show_in_folder():
+def show_in_folder(dir=""):
+    if dir == "": dir = current_project
     if current_project:
         if platform.system() == "Windows":
-            os.startfile(current_project)
+            os.startfile(dir)
         elif platform.system() == "Darwin":
-            subprocess.run(["open", current_project])
+            subprocess.run(["open", dir])
         else:
-            subprocess.run(["xdg-open", current_project])
+            subprocess.run(["xdg-open", dir])
+
+def build():
+    if current_project:
+        os.chdir(current_project)
+        subprocess.run(["make", "clean"])
+        subprocess.run(["make"])
+        show_in_folder(os.path.join(current_project, "target"))
+    
+def build_and_run():
+    if current_project:
+        os.chdir(current_project)
+        subprocess.run(["make", "clean"])
+        subprocess.run(["make", "run"])
+
 
 root = ThemedTk(theme="breeze")
 root.title("numengine")
@@ -52,5 +67,11 @@ open_editor_button.pack(pady=10)
 
 show_folder_button = ttk.Button(root, text="Show in Folder", command=show_in_folder)
 show_folder_button.pack(pady=10)
+
+build_button = ttk.Button(root, text="Build project", command=build)
+build_button.pack(pady=10)
+
+run_on_calc_button = ttk.Button(root, text="Run project on calculator", command=build_and_run)
+run_on_calc_button.pack(pady=10)
 
 root.mainloop()
