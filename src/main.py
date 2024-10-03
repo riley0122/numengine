@@ -1,0 +1,56 @@
+from tkinter import *
+from tkinter import filedialog, ttk
+from ttkthemes import ThemedTk
+import os
+import platform
+import subprocess
+
+def set_project_directory():
+    global current_project
+    folder_selected = filedialog.askdirectory()
+    if folder_selected:
+        current_project = folder_selected
+        print(f"Project directory set to {current_project}")
+        project_title_var.set(f"Current Project: {os.path.basename(current_project)}")
+
+def open_in_editor():
+    if current_project:
+        file_to_open = os.path.join(current_project, "src", "code.cpp")
+        try:
+            subprocess.run(["code", file_to_open])
+        except Exception as e:
+            print(f"Error opening code! {e}")
+    else:
+        print(f"Code file does not exist!")
+
+def show_in_folder():
+    if current_project:
+        if platform.system() == "Windows":
+            os.startfile(current_project)
+        elif platform.system() == "Darwin":
+            subprocess.run(["open", current_project])
+        else:
+            subprocess.run(["xdg-open", current_project])
+
+root = ThemedTk(theme="breeze")
+root.title("numengine")
+root.minsize(200, 200)
+root.maxsize(500, 800)
+root.geometry("500x600+50+50")
+
+set_dir_button = ttk.Button(root, text="Open project", command=set_project_directory)
+set_dir_button.pack(pady=20)
+
+current_project = ""
+project_title_var = StringVar(value="Current Project: None")
+
+project_title_label = ttk.Label(root, textvariable=project_title_var, font=("Arial", 16))
+project_title_label.pack(pady=20)
+
+open_editor_button = ttk.Button(root, text="Open in Editor", command=open_in_editor)
+open_editor_button.pack(pady=10)
+
+show_folder_button = ttk.Button(root, text="Show in Folder", command=show_in_folder)
+show_folder_button.pack(pady=10)
+
+root.mainloop()
