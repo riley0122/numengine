@@ -6,6 +6,8 @@
 int main(int argc, char *argv[]) {
     EADK::Display::pushRectUniform(EADK::Screen::Rect, Indigo);
 
+    EADK::Display::drawString("Started succesfully!", EADK::Point(0,0), false, White, Indigo);
+
     int running = 1;
 
     do {
