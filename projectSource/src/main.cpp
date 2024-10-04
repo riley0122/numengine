@@ -2,8 +2,7 @@
 #include "meta/display.h"
 #include "meta/eadk_vars.hpp"
 #include "palette.hpp"
-#include "code.hpp"
-#include <chrono>
+#include "game/code.hpp"
 
 int main(int argc, char *argv[]) {
     EADK::Display::pushRectUniform(EADK::Screen::Rect, Indigo);

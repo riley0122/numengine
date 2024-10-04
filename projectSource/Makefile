@@ -17,6 +17,7 @@ src = $(shell find src -name '*.cpp')
 CPPFLAGS = -std=c++11 -fno-exceptions
 CPPFLAGS += -Os -Wall
 CPPFLAGS += $(shell $(NWLINK) eadk-cflags)
+CPPFLAGS += -Isrc
 CPPFLAGS += -D__RODATA_EADK_API_LEVEL__=\"1.0\" -D__RODATA_EADK_APP_NAME__=\"$(NAME)\"
 LDFLAGS = -Wl,--relocatable
 LDFLAGS += -nostartfiles

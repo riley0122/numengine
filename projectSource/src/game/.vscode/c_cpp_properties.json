@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "include_parent",
+            "includePath": [
+                "${workspaceFolder}/.."
+            ]
+        }
+    ],
+    "version": 4
+}

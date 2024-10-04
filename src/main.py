@@ -17,7 +17,7 @@ def open_in_editor():
     if current_project:
         root.config(cursor="watch")
         root.update()
-        file_to_open = os.path.join(current_project, "src", "code.cpp")
+        file_to_open = os.path.join(current_project, "src", "game")
         try:
             subprocess.run(["code", file_to_open])
         except Exception as e:
@@ -25,7 +25,7 @@ def open_in_editor():
         root.config(cursor="")
         root.update()
     else:
-        print(f"Code file does not exist!")
+        print(f"game directory does not exist!")
 
 def show_in_folder(dir=""):
     if dir == "": dir = current_project
@@ -74,7 +74,7 @@ project_title_var = StringVar(value="Current Project: None")
 project_title_label = ttk.Label(root, textvariable=project_title_var, font=("Arial", 16))
 project_title_label.pack(pady=20)
 
-open_editor_button = ttk.Button(root, text="Open in Editor", command=open_in_editor)
+open_editor_button = ttk.Button(root, text="Open in vscode", command=open_in_editor)
 open_editor_button.pack(pady=10)
 
 show_folder_button = ttk.Button(root, text="Show in Folder", command=show_in_folder)
