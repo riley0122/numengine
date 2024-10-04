@@ -1,16 +1,22 @@
 from tkinter import *
-from tkinter import filedialog, ttk
+from tkinter import filedialog, ttk, simpledialog, messagebox
+import tkinter as tk
 from ttkthemes import ThemedTk
 import os
 import platform
 import subprocess
+import shutil
 
 console_out_text = ""
 error_out_text = ""
 
-def set_project_directory():
+def set_project_directory(dir=""):
     global current_project, console_out_text
-    folder_selected = filedialog.askdirectory()
+    if dir=="":
+        folder_selected = filedialog.askdirectory()
+    else:
+        folder_selected = dir
+
     if folder_selected:
         current_project = folder_selected
         console_out_text += f"Project directory set to {current_project}"
@@ -90,6 +96,23 @@ def update_console_output():
     console_out_text = ""
     error_out_text = ""
     console_out.config(state=DISABLED)
+    
+def create_project():
+    global current_project
+    folder_selected = filedialog.askdirectory()
+    if folder_selected:
+        if len(os.listdir(folder_selected)) == 0:
+            current_project = folder_selected
+        else:
+            name = simpledialog.askstring("Name", "What is the name of the project", parent=root)
+            current_project = os.path.join(folder_selected, name)
+            if os.path.exists(current_project) and not os.path.isfile(current_project):
+                messagebox.showerror("error", f"There is already a folder named {name}")
+                return
+            
+        project_dir = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), "projectSource")
+        shutil.copytree(project_dir, current_project)
+        set_project_directory(current_project)
 
 root = ThemedTk(theme="breeze")
 root.title("numengine")
@@ -98,7 +121,10 @@ root.maxsize(500, 800)
 root.geometry("500x600+50+50")
 
 set_dir_button = ttk.Button(root, text="Open project", command=set_project_directory)
-set_dir_button.pack(pady=20)
+set_dir_button.pack(padx=10, pady=10)
+
+create_project_button = ttk.Button(root, text="Create new project", command=create_project)
+create_project_button.pack(padx=10, pady=5)
 
 current_project = os.getcwd()
 project_title_var = StringVar(value=f"Current Project: {os.path.basename(current_project)}")
