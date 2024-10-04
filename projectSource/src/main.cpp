@@ -3,6 +3,7 @@
 #include "meta/eadk_vars.hpp"
 #include "palette.hpp"
 #include "game/code.hpp"
+#include "numengine/infoscreen.hpp"
 
 int main(int argc, char *argv[]) {
     EADK::Display::pushRectUniform(EADK::Screen::Rect, Indigo);
@@ -18,6 +19,15 @@ int main(int argc, char *argv[]) {
     game.start();
 
     const int frameDuration = 1000 / 30;
+
+    EADK::Keyboard::State kbdState = EADK::Keyboard::scan();
+    if (kbdState.keyDown(EADK::Keyboard::Key::Ans)) {
+        numengine::showInfoScreen();
+        while (running) {
+            EADK::Keyboard::State kbdState = EADK::Keyboard::scan();
+            running = !kbdState.keyDown(EADK::Keyboard::Key::Home);
+        }
+    }
 
     while (running) {
         game.update();
