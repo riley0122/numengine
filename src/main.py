@@ -15,11 +15,15 @@ def set_project_directory():
 
 def open_in_editor():
     if current_project:
+        root.config(cursor="watch")
+        root.update()
         file_to_open = os.path.join(current_project, "src", "code.cpp")
         try:
             subprocess.run(["code", file_to_open])
         except Exception as e:
             print(f"Error opening code! {e}")
+        root.config(cursor="")
+        root.update()
     else:
         print(f"Code file does not exist!")
 
@@ -35,16 +39,24 @@ def show_in_folder(dir=""):
 
 def build():
     if current_project:
+        root.config(cursor="watch")
+        root.update()
         os.chdir(current_project)
         subprocess.run(["make", "clean"])
         subprocess.run(["make"])
+        root.config(cursor="")
+        root.update()
         show_in_folder(os.path.join(current_project, "target"))
     
 def build_and_run():
     if current_project:
+        root.config(cursor="watch")
+        root.update()
         os.chdir(current_project)
         subprocess.run(["make", "clean"])
         subprocess.run(["make", "run"])
+        root.config(cursor="")
+        root.update()
 
 
 root = ThemedTk(theme="breeze")
