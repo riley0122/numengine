@@ -21,12 +21,16 @@ If you are on a **debian** based distribution (like ubuntu or linux mint) you ca
 bash <(curl -s https://raw.githubusercontent.com/riley0122/numengine/refs/heads/master/install/install_debian.sh)
 ```
 
+Then you can run `numengine` to open it!
+
 This script installs:
 
 - GCC 13 and related tools
 - ARM Embedded Toolchain (`arm-none-eabi-gcc`)
 - OpenGL dependencies (`mesa-utils`, `libglew-dev`, `libglfw3-dev`, `libglm-dev`, etc.)
 - Node.js and `nwlink`
+- Python and dependencies (if not installed)
+- NumEngine itself
 
 ### Manual installation (if needed)
 
@@ -42,6 +46,7 @@ If you prefer manual installation, ensure you have the following packages instal
   - `libglfw3-dev`
   - `libglm-dev`
 - Node.js and `npm` (for `nwlink` package)
+- Python and `pip3` (if not installed)
 
 To install ARM Embedded Toolchain manually:
 ```bash
