@@ -69,6 +69,10 @@ fi
 
 npm install nwlink -g
 
+if ! which python3 >/dev/null; then
+    sudo apt-get install python3 python3-pip python3-venv
+fi
+
 echo "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 echo "@                             @"
 echo "@          Finished!          @"
