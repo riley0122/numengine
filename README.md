@@ -17,16 +17,9 @@ It allows you to set up a project directory, open it in Visual Studio Code, buil
 To get started with NumEngine, you'll need to install several dependencies.
 If you are on a **debian** based distribution (like ubuntu or linux mint) you can use these steps to install:
 
-1. Clone the project and navigate to its directory:
-    ```bash
-    git clone https://github.com/riley0122/numengine
-    cd numengine
-    ```
-
-2. Run the provided installation script:
-    ```bash
-    ./install-deps.sh
-    ```
+```bash
+bash <(curl -s https://raw.githubusercontent.com/riley0122/numengine/refs/heads/master/install/install_debian.sh)
+```
 
 This script installs:
 
@@ -60,6 +53,14 @@ tar -xvjf gcc-arm-none-eabi.tar.bz2 -C /opt/gcc-arm-none-eabi --strip-components
 echo "export PATH=\$PATH:/opt/gcc-arm-none-eabi/bin" >> ~/.bashrc
 source ~/.bashrc
 ```
+
+Then you just need to clone the repo
+```bash
+git clone https://github.com/riley0122/numengine
+```
+
+then to run it you can run `numengine/src/numengine.sh`.
+
 ## Usage
 
 1. **Open NumEngine**:
