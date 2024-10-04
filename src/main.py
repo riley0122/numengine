@@ -5,6 +5,9 @@ import os
 import platform
 import subprocess
 
+console_out_text = ""
+error_out_text = ""
+
 def set_project_directory():
     global current_project
     folder_selected = filedialog.askdirectory()
@@ -14,12 +17,17 @@ def set_project_directory():
         project_title_var.set(f"Current Project: {os.path.basename(current_project)}")
 
 def open_in_editor():
+    global console_out_text, error_out_text
     if current_project:
+        console_out.delete(1.0, END)
         root.config(cursor="watch")
         root.update()
         file_to_open = os.path.join(current_project, "src", "game")
         try:
-            subprocess.run(["code", file_to_open])
+            x = subprocess.run(["code", file_to_open], capture_output=True, text=True)
+            console_out_text += x.stdout
+            error_out_text += x.stderr
+            update_console_output()
         except Exception as e:
             print(f"Error opening code! {e}")
         root.config(cursor="")
@@ -28,36 +36,65 @@ def open_in_editor():
         print(f"game directory does not exist!")
 
 def show_in_folder(dir=""):
+    global console_out_text, error_out_text
     if dir == "": dir = current_project
     if current_project:
+        console_out.delete(1.0, END)
         if platform.system() == "Windows":
             os.startfile(dir)
         elif platform.system() == "Darwin":
-            subprocess.run(["open", dir])
+            x = subprocess.run(["open", dir], capture_output=True, text=True)
+            console_out_text += x.stdout
+            error_out_text += x.stderr
+            update_console_output()
         else:
-            subprocess.run(["xdg-open", dir])
+            x = subprocess.run(["xdg-open", dir], capture_output=True, text=True)
+            console_out_text += x.stdout
+            error_out_text += x.stderr
+            update_console_output()
 
 def build():
+    global console_out_text, error_out_text
     if current_project:
+        console_out.delete(1.0, END)
         root.config(cursor="watch")
         root.update()
         os.chdir(current_project)
-        subprocess.run(["make", "clean"])
-        subprocess.run(["make"])
+        x = subprocess.run(["make", "clean"], capture_output=True, text=True)
+        console_out_text += x.stdout
+        error_out_text += x.stderr
+        update_console_output()
+        x = subprocess.run(["make"], capture_output=True, text=True)
+        console_out_text += x.stdout
+        error_out_text += x.stderr
+        update_console_output()
         root.config(cursor="")
         root.update()
         show_in_folder(os.path.join(current_project, "target"))
     
 def build_and_run():
+    global console_out_text, error_out_text
     if current_project:
+        console_out.delete(1.0, END)
         root.config(cursor="watch")
         root.update()
         os.chdir(current_project)
-        subprocess.run(["make", "clean"])
-        subprocess.run(["make", "run"])
+        x = subprocess.run(["make", "clean"], capture_output=True, text=True)
+        console_out_text += x.stdout
+        error_out_text += x.stderr
+        update_console_output()
+        x = subprocess.run(["make", "run"], capture_output=True, text=True)
+        console_out_text += x.stdout
+        error_out_text += x.stderr
+        update_console_output()
         root.config(cursor="")
         root.update()
 
+def update_console_output():
+    console_out.delete(1.0, END)
+    console_out.insert(END, f"Console Output:\n{console_out_text}\n")
+    if error_out_text:
+        console_out.insert(END, f"Errors:\n{error_out_text}\n")
 
 root = ThemedTk(theme="breeze")
 root.title("numengine")
@@ -68,8 +105,8 @@ root.geometry("500x600+50+50")
 set_dir_button = ttk.Button(root, text="Open project", command=set_project_directory)
 set_dir_button.pack(pady=20)
 
-current_project = ""
-project_title_var = StringVar(value="Current Project: None")
+current_project = os.getcwd()
+project_title_var = StringVar(value=f"Current Project: {os.path.basename(current_project)}")
 
 project_title_label = ttk.Label(root, textvariable=project_title_var, font=("Arial", 16))
 project_title_label.pack(pady=20)
@@ -85,5 +122,8 @@ build_button.pack(pady=10)
 
 run_on_calc_button = ttk.Button(root, text="Run project on calculator", command=build_and_run)
 run_on_calc_button.pack(pady=10)
+
+console_out = Text(root, height=10, width=50)
+console_out.pack()
 
 root.mainloop()
