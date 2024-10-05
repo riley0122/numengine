@@ -42,12 +42,46 @@ def generate_sprite():
         hpp_content += "using namespace numengine;\n\n"
 
         hpp_content += "sprite_image_data_block image_data[] = {\n"
+
+        visited = np.zeros((new_h, new_w), dtype=bool)
+
+        def find_colour_block(x, y):
+            """Find the largest block of continous colour from a point"""
+            r, g, b = pixel_data[y, x]
+            colour = (r << 16) | (g << 8) | b
+
+            width = 0
+            height = 0
+
+            for i in range(x, new_w):
+                if visited[y, i]:
+                    break
+                r2, g2, b2 = pixel_data[y, i]
+                if (r2 << 16 | g2 << 8 | b2) != colour:
+                    break
+                width += 1
+
+            for j in range(y, new_h):
+                for i in range(x, x + width):
+                    if visited[j, i]:
+                        return width, height
+                    r2, g2, b2 = pixel_data[j, 1]
+                    if (r2 << 16 | g2 << 8 | b2) != colour:
+                        return width, height
+                height += 1
+
         for y in range(new_h):
             for x in range(new_w):
-                r, g, b = pixel_data[y, x]
-                hex_colour = (r << 16) | (g << 8) | b
+                if not visited[y, x]:
+                    block_w, block_h = find_colour_block(x, y)
+                    r, g, b = pixel_data[y, x]
+                    hex_colour = (r << 16) | (g << 8) | b
 
-                hpp_content += f"\t{'{'} {x}, {y}, 1, 1, EADK::Color({hex(hex_colour)}) {'}'},"
+                    hpp_content += f"\t{'{'} {x}, {y}, {block_w}, {block_h}, EADK::Color({hex(hex_colour)}) {'}'},"
+
+                    for j in range(y, y + block_h):
+                        for i in range(x, x + block_h):
+                            visited[j, i] = True
         
         hpp_content += "};\n\n"
 
