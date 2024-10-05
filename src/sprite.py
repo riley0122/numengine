@@ -65,10 +65,12 @@ def generate_sprite():
                 for i in range(x, x + width):
                     if visited[j, i]:
                         return width, height
-                    r2, g2, b2 = pixel_data[j, 1]
+                    r2, g2, b2 = pixel_data[j, i]
                     if (r2 << 16 | g2 << 8 | b2) != colour:
                         return width, height
                 height += 1
+        
+            return width, height
 
         for y in range(new_h):
             for x in range(new_w):
@@ -80,7 +82,7 @@ def generate_sprite():
                     hpp_content += f"\t{'{'} {x}, {y}, {block_w}, {block_h}, EADK::Color({hex(hex_colour)}) {'}'},"
 
                     for j in range(y, y + block_h):
-                        for i in range(x, x + block_h):
+                        for i in range(x, x + block_w):
                             visited[j, i] = True
         
         hpp_content += "};\n\n"
