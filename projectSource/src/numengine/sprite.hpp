@@ -13,6 +13,7 @@ namespace numengine
         int relative_y;
         int width;
         int height;
+        EADK::Color colour;
     };
     
     class behaviour
