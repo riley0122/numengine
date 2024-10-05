@@ -2,7 +2,7 @@
 
 using namespace numengine;
 
-void numengine::error(char* error = "Unknown error") {
+void numengine::error(char* error) {
     EADK::Display::pushRectUniform(EADK::Screen::Rect, Red);
     EADK::Display::drawString("An error occurred!", EADK::Point(0,0), true, White, Red);
     EADK::Display::drawString(error, EADK::Point(0,30), false, White, Red);

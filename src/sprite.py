@@ -4,6 +4,9 @@ from tkinter import ttk, filedialog, simpledialog
 from PIL import Image
 import numpy as np
 import os
+import subprocess
+import glob
+import shutil
 
 SCREEN_HEIGHT = 240
 SCREEN_WIDTH = 320
@@ -95,6 +98,30 @@ def generate_sprite():
         
         with open(os.path.join(sprite_path, f"{sprite_name}.hpp"), "w+") as f:
             f.write(hpp_content)
+            
+def preview_sprite():
+    preview_program_dir = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), "src", "sprite_preview")
+    os.chdir(os.path.join(current_project, "src", "game", "sprites"))
+    sprite_name = filedialog.askopenfilename(filetypes=[("C++ header file", ".hpp")])
+    if not sprite_name:
+        return
+    os.chdir(preview_program_dir)
+    subprocess.run(["mkdir", "-p", "out"])
+    subprocess.run(["rm", "-rf", "out"])
+    subprocess.run(["mkdir", "out"])    
+    os.chdir(os.path.join(preview_program_dir, "out"))
+    sprite_name_name = os.path.splitext(os.path.basename(sprite_name))[0]
+    subprocess.run(["cmake", "..", f"-DSPRITE_NAME={sprite_name_name}"])
+    sprite_file_loc = os.path.join(preview_program_dir, "out", f"{sprite_name_name}.hpp")
+    shutil.copyfile(sprite_name, sprite_file_loc)
+    subprocess.run(["make"])
+    files = glob.glob("sprite_preview*") # * because on windows it will be .exe
+    if len(files) > 1:
+        print("Multiple files named sprite_preview found?")
+        return
+    os.remove(sprite_file_loc)
+    subprocess.run(f"./{files[0]}")
+    os.chdir(current_project)
 
 def open_sprite_editor(root, current):
     global current_project
@@ -110,3 +137,6 @@ def open_sprite_editor(root, current):
 
     generate_button = ttk.Button(new_window, text="Generate sprite", command=generate_sprite)
     generate_button.pack(pady=10)
+
+    preview_button = ttk.Button(new_window, text="Preview sprite", command=preview_sprite)
+    preview_button.pack(pady=10)
