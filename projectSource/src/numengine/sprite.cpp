@@ -4,7 +4,7 @@ using namespace numengine;
 
 numengine::sprite::sprite(std::vector<sprite_image_data_block> image_data)
 {
-
+    this->image_data = image_data;
 }
 
 void numengine::sprite::run_behaviour(char *name)
