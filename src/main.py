@@ -6,6 +6,7 @@ import os
 import platform
 import subprocess
 import shutil
+from sprite import open_sprite_editor
 
 console_out_text = ""
 error_out_text = ""
@@ -147,5 +148,8 @@ run_on_calc_button.pack(pady=10)
 console_out = Text(root, height=10, width=50)
 console_out.pack()
 console_out.config(state=DISABLED)
+
+sprite_editor_button = ttk.Button(root, text="Open sprite editor", command=lambda:open_sprite_editor(root))
+sprite_editor_button.pack(pady=10)
 
 root.mainloop()
