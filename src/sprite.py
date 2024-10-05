@@ -87,7 +87,7 @@ def generate_sprite():
         
         hpp_content += "};\n\n"
 
-        hpp_content += f"sprite {sprite_name}(std::vector<sprite_image_data_block>(std::begin(image_data), std::end(image_data)));\n"
+        hpp_content += f"constexpr static sprite {sprite_name}(std::vector<sprite_image_data_block>(std::begin(image_data), std::end(image_data)));\n"
 
         sprite_path = os.path.join(current_project, "src", "game", "sprites")
         if not os.path.exists(sprite_path):
