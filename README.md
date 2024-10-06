@@ -1,5 +1,7 @@
 # NumEngine
 
+⚠️ This repository is still a **work in progress**, some features might not work yet or are just straight up missing ⚠️
+
 NumEngine is a lightweight game engine/framework made to run on the numworks calculator. 
 
 It allows you to set up a project directory, open it in Visual Studio Code, build the project, and run it directly on a calculator. This engine provides a simple C++ interface for developing games.
