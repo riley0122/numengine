@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 #include "eadk/eadk.hpp"
 #include "numengine/sprite.hpp"
@@ -7,7 +8,7 @@
 namespace numengine
 {
     struct scene_sprite {
-        sprite* sprite;
+        sprite* sprite_;
         unsigned int x;
         unsigned int y;
         float scale;
@@ -19,9 +20,9 @@ namespace numengine
     private:
         std::string name;
         unsigned int id;
-        EADK::Color bg_colour;
+        uint32_t bg_colour;
     public:
-        scene(std::string name, EADK::Color bg_colour, unsigned int id);
+        scene(std::string name, uint32_t bg_colour, unsigned int id);
 
         std::vector<scene_sprite> sprites;
         unsigned short register_sprite(sprite* s);

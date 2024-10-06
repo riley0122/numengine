@@ -20,3 +20,7 @@ void numengine::sprite::run_behaviour(char *name)
     sprintf(buffer, "Behaviour '%s' doesn't exist", name);
     error(buffer);
 }
+
+void sprite::add_behaviour(behaviour* b) { 
+    behaviours.push_back(b); 
+}

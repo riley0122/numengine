@@ -1,8 +1,7 @@
 #pragma once
 
 #include <vector>
-#include <stdio.h>
-#include <cstdlib>
+#include <string>
 #include "error.hpp"
 
 namespace numengine
@@ -33,7 +32,7 @@ namespace numengine
         sprite(std::vector<sprite_image_data_block> image_data);
         std::vector<sprite_image_data_block> get_image_data() { return image_data; };
 
-        void add_behaviour(behaviour* b) { behaviours.push_back(b); }
+        void add_behaviour(behaviour* b);
         void run_behaviour(char* name);
     };
 }
