@@ -13,6 +13,7 @@ It allows you to set up a project directory, open it in Visual Studio Code, buil
 - **Run projects on a calculator**: Directly deploy the built project onto a compatible calculator.
 - **Open project in Visual Studio Code**: Launch your project in VSCode for quick edits.
 - **View project folder**: Open the project folder in your system’s file explorer for easy access.
+- **Generate and preview sprites**: Generate sprites in a format that can be used as sprite.
 
 ## Installation
 
