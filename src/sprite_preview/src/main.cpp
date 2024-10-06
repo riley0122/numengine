@@ -80,6 +80,8 @@ int main(int argc, char *argv[]) {
 
         float width = static_cast<float>(s.width) / SCR_WIDTH;
         float height = static_cast<float>(s.height) / SCR_HEIGHT;
+        width *= 2.0f;
+        height *= 2.0f;
 
         float relativeX = (s.relative_x > 0) ? (2.0f * s.relative_x / SCR_WIDTH - 1.0f) : 0.0f;
         float relativeY = (s.relative_y > 0) ? (1.0f - 2.0f * s.relative_y / SCR_HEIGHT) : 0.0f;
