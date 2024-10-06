@@ -75,6 +75,8 @@ def generate_sprite():
         
             return width, height
 
+        items = []
+
         for y in range(new_h):
             for x in range(new_w):
                 if not visited[y, x]:
@@ -82,15 +84,16 @@ def generate_sprite():
                     r, g, b = pixel_data[y, x]
                     hex_colour = (r << 16) | (g << 8) | b
 
-                    hpp_content += f"\t{'{'} {x}, {y}, {block_w}, {block_h}, EADK::Color({hex(hex_colour)}) {'}'},"
+                    items.append(f"\t{'{'} {x}, {y}, {block_w}, {block_h}, EADK::Color({hex(hex_colour)}) {'}'}")
 
                     for j in range(y, y + block_h):
                         for i in range(x, x + block_w):
                             visited[j, i] = True
         
+        hpp_content += ",".join(items)
         hpp_content += "};\n\n"
 
-        hpp_content += f"constexpr static sprite {sprite_name}(std::vector<sprite_image_data_block>(std::begin(image_data), std::end(image_data)));\n"
+        hpp_content += f"sprite {sprite_name}(std::vector<sprite_image_data_block>(std::begin(image_data), std::end(image_data)));\n"
 
         sprite_path = os.path.join(current_project, "src", "game", "sprites")
         if not os.path.exists(sprite_path):
@@ -98,6 +101,8 @@ def generate_sprite():
         
         with open(os.path.join(sprite_path, f"{sprite_name}.hpp"), "w+") as f:
             f.write(hpp_content)
+
+        os.chdir(current_project)
             
 def preview_sprite():
     preview_program_dir = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")), "src", "sprite_preview")
