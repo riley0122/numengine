@@ -72,6 +72,25 @@ int main(int argc, char *argv[]) {
 
     unsigned int shaderProgram = createShaderProgram(vertex_shader_shader, fragment_shader_shader);
 
+    int maxWidth = 0;
+    int maxHeight = 0;
+
+    for (const sprite_image_data_block& block : final_sprite.get_image_data()) {
+        maxWidth = std::max(maxWidth, block.relative_x + block.width);
+        maxHeight = std::max(maxHeight, block.relative_y + block.height);
+    }
+
+    float spriteAspectRatio = static_cast<float>(maxWidth) / maxHeight;
+    float screenAspectRatio = static_cast<float>(SCR_WIDTH) / SCR_HEIGHT;
+
+    if (spriteAspectRatio > screenAspectRatio) {
+        zoomLevel = static_cast<float>(SCR_WIDTH) / maxWidth;
+    } else {
+        zoomLevel = static_cast<float>(SCR_HEIGHT) / maxHeight;
+    }
+
+    updateViewMatrix(shaderProgram);
+
     std::vector<numengine::sprite_image_data_block> image_data = final_sprite.get_image_data();
     std::vector<rect> rects = std::vector<rect>();
     for (sprite_image_data_block s : image_data) {
@@ -82,6 +101,8 @@ int main(int argc, char *argv[]) {
         float height = static_cast<float>(s.height) / SCR_HEIGHT;
         width *= 2.0f;
         height *= 2.0f;
+        width -= 1.0f;
+        height -= 1.0f;
 
         float relativeX = (s.relative_x > 0) ? (2.0f * s.relative_x / SCR_WIDTH - 1.0f) : 0.0f;
         float relativeY = (s.relative_y > 0) ? (1.0f - 2.0f * s.relative_y / SCR_HEIGHT) : 0.0f;
