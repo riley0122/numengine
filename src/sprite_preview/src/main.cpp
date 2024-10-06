@@ -97,15 +97,11 @@ int main(int argc, char *argv[]) {
         float r, g, b;
         translateColours(s.colour, r, g, b);
 
-        float width = static_cast<float>(s.width) / SCR_WIDTH;
-        float height = static_cast<float>(s.height) / SCR_HEIGHT;
-        width *= 2.0f;
-        height *= 2.0f;
-        width -= 1.0f;
-        height -= 1.0f;
+        float width = static_cast<float>(s.width) / SCR_WIDTH * 2.0f;
+        float height = static_cast<float>(s.height) / SCR_HEIGHT * 2.0f;
 
-        float relativeX = (s.relative_x > 0) ? (2.0f * s.relative_x / SCR_WIDTH - 1.0f) : 0.0f;
-        float relativeY = (s.relative_y > 0) ? (1.0f - 2.0f * s.relative_y / SCR_HEIGHT) : 0.0f;
+        float relativeX = (2.0f * s.relative_x / SCR_WIDTH - 1.0f);
+        float relativeY = (1.0f - 2.0f * s.relative_y / SCR_HEIGHT);
 
         rect R = rect(width, height, relativeX, relativeY, glm::vec4(r, g, b, 1.0f));
         R.generate_buffers();

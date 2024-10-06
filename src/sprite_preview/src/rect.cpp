@@ -11,14 +11,14 @@ rect::rect(float width, float height, float center_x, float center_y, glm::vec4 
 
     // 4 x,y pairs
     float vertecies[8] = {
-        // Bottom left
-        -halfWidth, -halfHeight,
-        // Bottom right
-        halfWidth, -halfHeight,
-        // Top right
-        halfWidth, halfHeight,
         // Top left
-        -halfWidth, halfHeight
+        0.0f, 0.0f,
+        // Top right
+        width, 0.0f,
+        // Bottom right
+        width, -height,
+        // Bottom left
+        0.0f, -height
     };
 
     for (unsigned int i = 0; i < 8; i++)
